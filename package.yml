@@ -1,0 +1,12 @@
+package: structure_plus
+version: dev
+author: Wolfgang Bund
+supportpage: www.redaxo.org/de/forum/
+
+page:
+    title: Structure Plus
+    pjax: true
+    icon: rex-icon rex-icon-system
+    subpages:
+        settings:
+            title: Einstellungen
