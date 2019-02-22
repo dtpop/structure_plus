@@ -11,6 +11,8 @@ Auf die Anzeige im Frontend haben die Einstellungen keine Auswirkungen. Die Stan
 
 Zusätzlich kann angegeben werden, wieviele Artikel in der Liste angezeigt werden. Bei REDAXO ist der Standardwert 30.
 
+Mit einem Klick in die Spaltenköpfe kann die Tabelle nach anderen Spalten sortiert werden. Diese Sortierung wirkt sich allerdings nur auf die momentane Ansicht aus. Mit Strg+Klick in den Tabellenkopf kann die ursprüngliche Sortierung wieder hergestellt werden.
+
 ## Einstellungen
  
 Auf der Einstellungsseite kann eingestellt werden für welche Kategorien die Anzeige im Backend modifiziert werden soll und nach welchem Kriterium die Tabelle sortiert werden soll. Die Sortierung kann aufsteigend oder absteigend eingestellt werden.

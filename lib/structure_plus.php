@@ -156,7 +156,7 @@ class structure_plus {
             // ----------- PRINT OUT THE ARTICLES
 
             $echo .= '
-            <table class="table table-striped table-hover">
+            <table class="table table-striped table-hover tablesorter" id="sp_table">
                 <thead>
                     <tr>
                         <th class="rex-table-icon">' . $art_add_link . '</th>
@@ -341,10 +341,10 @@ class structure_plus {
         $field_type = rex_config::get('structure_plus','field_type');
         switch ($field_type) {
             case 'date':
-                return date('d.m.Y',$value);
+                return $value ? date('d.m.Y',$value) : '';
                 break;
             case 'timestamp':
-                return date('d.m.Y H:m:s',$value);
+                return $value ? date('d.m.Y H:m:s',$value) : '';
                 break;
 
             default:
