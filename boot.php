@@ -6,11 +6,14 @@ if (rex::isBackend()) {
     rex_view::addCssFile($this->getAssetsUrl('theme.default.min.css'));    
     
     rex_extension::register('PAGE_STRUCTURE_HEADER', function ($params) {
-        $for_categories = explode(',',rex_config::get('structure_plus','for_categories'));
+        $for_categories = explode(',',$this->getConfig('for_categories'));
         $params = $params->getParams();
         
         // nur in den eingestellten Kategorien ausführen
-        if (in_array($params['category_id'],$for_categories)) {
+        if (
+                (!$this->getConfig('for_all_categories') && in_array($params['category_id'],$for_categories)) ||
+                ($this->getConfig('for_all_categories') && !in_array($params['category_id'],$for_categories))
+            ) {
             
             rex_extension::register('OUTPUT_FILTER', function ($params) {
                 
@@ -33,4 +36,23 @@ if (rex::isBackend()) {
             });
         }        
     });
+    
+    // Setzt automatisch das art_online_from auf das aktuelle Datum
+    $extension_points = ['ART_ADDED','CAT_ADDED'];
+    foreach ($extension_points as $extensionpint) {
+        rex_extension::register($extensionpint, function ($params) {
+            $_params = $params->getParams();
+            $sql = rex_sql::factory();
+            $sql->setTable(rex::getTable('article'));
+            $sql->select();
+            $fields = $sql->getFieldnames();
+            if (in_array('art_online_from',$fields)) {
+                $sql->setTable(rex::getTable('article'));
+                $sql->setValue('art_online_from',time());
+                $sql->setWhere('id = :id',['id'=>$_params['id']]);
+                $sql->update();
+            }
+        });
+    }
+    
 }

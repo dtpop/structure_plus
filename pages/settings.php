@@ -10,6 +10,9 @@ $form = '';
 
 if ($config['submit']) {
     $cfg = rex_request('config','array');
+    if (!isset($cfg['for_all_categories'])) {
+        $cfg['for_all_categories'] = 0; // checkbox
+    }
     foreach ($cfg as $k=>$var) {
         if ($k != 'submit') {
             $this->setConfig($k,$var);            
@@ -114,14 +117,24 @@ $formElements[] = $n;
 $fragment->setVar('elements', $formElements, false);
 $form .= $fragment->parse('core/form/container.php');
 
+// gültig für alle Kategorien ...
+
+$formElements = [];
+$n = [];
+$n['label'] = '<label for="structure_plus_for_all_categories">Kategorien ausschließen</label>';
+$n['field'] = '<input type="checkbox" id="structure_plus_for_all_categories" name="config[for_all_categories]" value="1" ' . ($this->getConfig('for_all_categories') ? ' checked="checked"' : '') . ' />';
+$n['note'] = 'Wenn diese Checkbox nicht angehakt ist, werden die unten ausgewählten Kategorien angepasst. Wenn die Checkbox angewählt ist, werden alle Kategorien angepasst und die ausgewählten Kategorien ausgeschlossen.';
+$formElements[] = $n;
+$fragment->setVar('elements', $formElements, false);
+$form .= $fragment->parse('core/form/container.php');
+
 // gültig für Kategorien ...
 
 $formElements = [];
 $n = [];
-$n['label'] = '<label>Sortierung wird für diese Kategorien verwendet</label>';
+$n['label'] = '<label id="sp_for_categories_label">Kategorien</label>';
 $n['field'] = rex_var_linklist::getWidget(1, 'config[for_categories]',$this->getConfig('for_categories'));
 $formElements[] = $n;
-$fragment = new rex_fragment();
 $fragment->setVar('elements', $formElements, false);
 $form .= $fragment->parse('core/form/container.php');
 
@@ -136,6 +149,50 @@ $n['note'] = '0 für alle eintragen. Standardwert in REDAXO ist 30';
 $formElements[] = $n;
 $fragment->setVar('elements', $formElements, false);
 $form .= $fragment->parse('core/form/container.php');
+
+
+// Farben
+
+$formElements = [];
+$n = [];
+$n['label'] = '<label for="structure_plus_color_online">Farbe online</label>';
+$n['field'] = '<input class="form-control ud_minicolors" id="structure_plus_color_online" type="text" name="config[color_online]" value="' . $this->getConfig('color_online') . '" />';
+$formElements[] = $n;
+$fragment->setVar('elements', $formElements, false);
+$form .= $fragment->parse('core/form/container.php');
+
+$formElements = [];
+$n = [];
+$n['label'] = '<label for="structure_plus_color_offline">Farbe Offline</label>';
+$n['field'] = '<input class="form-control ud_minicolors" id="structure_plus_color_offline" type="text" name="config[color_offline]" value="' . $this->getConfig('color_offline') . '" />';
+$formElements[] = $n;
+$fragment->setVar('elements', $formElements, false);
+$form .= $fragment->parse('core/form/container.php');
+
+$formElements = [];
+$n = [];
+$n['label'] = '<label for="structure_plus_color_disabled">Farbe Gesperrt</label>';
+$n['field'] = '<input class="form-control ud_minicolors" id="structure_plus_color_disabled" type="text" name="config[color_disabled]" value="' . $this->getConfig('color_disabled') . '" />';
+$formElements[] = $n;
+$fragment->setVar('elements', $formElements, false);
+$form .= $fragment->parse('core/form/container.php');
+
+$formElements = [];
+$n = [];
+$n['label'] = '<label for="structure_plus_color_future">Farbe Zukunft</label>';
+$n['field'] = '<input class="form-control ud_minicolors" id="structure_plus_color_future" type="text" name="config[color_future]" value="' . $this->getConfig('color_future') . '" />';
+$formElements[] = $n;
+$fragment->setVar('elements', $formElements, false);
+$form .= $fragment->parse('core/form/container.php');
+
+$formElements = [];
+$n = [];
+$n['label'] = '<label for="structure_plus_color_gone">Farbe Abgelaufen</label>';
+$n['field'] = '<input class="form-control ud_minicolors" id="structure_plus_color_gone" type="text" name="config[color_gone]" value="' . $this->getConfig('color_gone') . '" />';
+$formElements[] = $n;
+$fragment->setVar('elements', $formElements, false);
+$form .= $fragment->parse('core/form/container.php');
+
 
 
 
@@ -174,3 +231,31 @@ echo $fragment->parse('core/page/section.php');
 
 ?>
 
+<script type="text/javascript">
+    /*
+    $(document).on('rex:ready',function() {
+        show_hide_categories ();
+    });
+    
+    $(document).on('change','input#structure_plus_for_all_categories',function() {
+        show_hide_categories();
+    });
+    
+    
+    function show_hide_categories () {
+        $('#sp_for_categories_label').parents('.rex-form-container').show();
+        if ($('input#structure_plus_for_all_categories').prop('checked')) {
+            $('#sp_for_categories_label').parents('.rex-form-container').hide();            
+        }
+    }
+     */
+    
+    $('.ud_minicolors').minicolors(
+        {
+            theme: 'bootstrap',
+            position: 'bottom right',
+        }
+    );
+    
+    
+</script>

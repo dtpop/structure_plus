@@ -35,6 +35,10 @@ class structure_plus {
         $clang = rex_clang::exists($clang) ? $clang : rex_clang::getStartId();
         
         $config = rex_config::get('structure_plus');
+        if (!$config['additional_db_column']) {
+            $config['additional_db_column'] = 'priority';
+        }
+        
         /*
             "additional_column_label" => "Online vom ..."
             "additional_db_column" => "art_online_from"
@@ -156,6 +160,13 @@ class structure_plus {
             // ----------- PRINT OUT THE ARTICLES
 
             $echo .= '
+            <style>
+               tr td.color_online { background-color: '.rex_config::get('structure_plus','color_online').' }
+               tr td.color_future { background-color: '.rex_config::get('structure_plus','color_future').' }
+               tr td.color_offline { background-color: '.rex_config::get('structure_plus','color_offline').' }
+               tr td.color_gone { background-color: '.rex_config::get('structure_plus','color_gone').' }
+               tr td.color_disabled { background-color: '.rex_config::get('structure_plus','color_disabled').' }
+            </style>
             <table class="table table-striped table-hover tablesorter" id="sp_table">
                 <thead>
                     <tr>
@@ -276,6 +287,8 @@ class structure_plus {
                         $tmpl = isset($TEMPLATE_NAME[$sql->getValue('template_id')]) ? $TEMPLATE_NAME[$sql->getValue('template_id')] : '';
                         $tmpl_td = '<td data-title="' . rex_i18n::msg('header_template') . '">' . $tmpl . '</td>';
                     }
+                    
+                    $class_additional = self::get_row_class($sql->getValue($config['additional_db_column']),$sql->getValue('art_online_to'),$sql->getValue('status'));
 
                     $echo .= '<tr' . (($class_startarticle != '') ? ' class="' . trim($class_startarticle) . '"' : '') . '>
                             <td class="rex-table-icon"><a href="' . $editModeUrl . '" title="' . rex_escape($sql->getValue('name')) . '"><i class="rex-icon' . $class . '"></i></a></td>
@@ -284,7 +297,7 @@ class structure_plus {
                             ' . $tmpl_td . '
                             <td data-title="' . rex_i18n::msg('header_date') . '">' . rex_formatter::strftime($sql->getDateTimeValue('createdate'), 'date') . '</td>
                             <td class="rex-table-priority" data-title="' . rex_i18n::msg('header_priority') . '">' . rex_escape($sql->getValue('priority')) . '</td>
-                            <td>' . self::get_field_value(rex_escape($sql->getValue($config['additional_db_column']))) . '</td>
+                            <td class="'.$class_additional.'">' . self::get_field_value(rex_escape($sql->getValue($config['additional_db_column']))) . '</td>
                             <td class="rex-table-action"><a href="' . $context->getUrl(['article_id' => $sql->getValue('id'), 'function' => 'edit_art', 'artstart' => $artstart]) . '"><i class="rex-icon rex-icon-edit"></i> ' . rex_i18n::msg('change') . '</a></td>
                             ' . $add_extra . '
                         </tr>
@@ -353,6 +366,29 @@ class structure_plus {
         }
         
         
+    }
+    
+    
+    public static function get_row_class ($online_from,$online_to,$status) {
+        if (in_array(rex_config::get('structure_plus','field_type'),['date','timestamp'])) {
+            if (!$online_from && !$online_to) {
+                return '';
+            }
+            if ($status == 0) {
+                return 'color_offline';
+            }
+            if ($status == 2) {
+                return 'color_disabled';
+            }
+            if ($online_to && $online_to < time()) {
+                return 'color_gone';
+            }
+            if ($online_from > time()) {
+                return 'color_future';
+            }
+            return 'color_online';
+        }
+        return '';
     }
 
 }
