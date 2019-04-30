@@ -38,6 +38,7 @@ class structure_plus {
         if (!$config['additional_db_column']) {
             $config['additional_db_column'] = 'priority';
         }
+        $show_additional_column = in_array($config['additional_db_column'],['name','priority']) ? false : true;
         
         /*
             "additional_column_label" => "Online vom ..."
@@ -158,6 +159,8 @@ class structure_plus {
             $sql->setQuery($qry);
 
             // ----------- PRINT OUT THE ARTICLES
+             
+            $additional_head = $show_additional_column ? '<th>'.$config['additional_column_label'].'</th>' : '';
 
             $echo .= '
             <style>
@@ -176,7 +179,7 @@ class structure_plus {
                         ' . $tmpl_head . '
                         <th>' . rex_i18n::msg('header_date') . '</th>
                         <th class="rex-table-priority">' . rex_i18n::msg('header_priority') . '</th>
-                        <th>'.$config['additional_column_label'].'</th>
+                        '.$additional_head.'
                         <th class="rex-table-action" colspan="3">' . rex_i18n::msg('header_status') . '</th>
                     </tr>
                 </thead>
@@ -289,6 +292,9 @@ class structure_plus {
                     }
                     
                     $class_additional = self::get_row_class($sql->getValue($config['additional_db_column']),$sql->getValue('art_online_to'),$sql->getValue('status'));
+                    
+                    $additional_col = $show_additional_column ? '<td class="'.$class_additional.'">' . self::get_field_value(rex_escape($sql->getValue($config['additional_db_column']))) . '</td>' : '';
+                    
 
                     $echo .= '<tr' . (($class_startarticle != '') ? ' class="' . trim($class_startarticle) . '"' : '') . '>
                             <td class="rex-table-icon"><a href="' . $editModeUrl . '" title="' . rex_escape($sql->getValue('name')) . '"><i class="rex-icon' . $class . '"></i></a></td>
@@ -297,7 +303,7 @@ class structure_plus {
                             ' . $tmpl_td . '
                             <td data-title="' . rex_i18n::msg('header_date') . '">' . rex_formatter::strftime($sql->getDateTimeValue('createdate'), 'date') . '</td>
                             <td class="rex-table-priority" data-title="' . rex_i18n::msg('header_priority') . '">' . rex_escape($sql->getValue('priority')) . '</td>
-                            <td class="'.$class_additional.'">' . self::get_field_value(rex_escape($sql->getValue($config['additional_db_column']))) . '</td>
+                            '.$additional_col.'
                             <td class="rex-table-action"><a href="' . $context->getUrl(['article_id' => $sql->getValue('id'), 'function' => 'edit_art', 'artstart' => $artstart]) . '"><i class="rex-icon rex-icon-edit"></i> ' . rex_i18n::msg('change') . '</a></td>
                             ' . $add_extra . '
                         </tr>
