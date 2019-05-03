@@ -2,9 +2,7 @@
 
 if (rex::isBackend()) {
     
-    if (rex_plugin::exists('ui_tools','jquery-minicolors')) {
-        rex_view::addJSFile($this->getAssetsUrl('jquery.tablesorter.min.js'));
-    }
+    rex_view::addJSFile($this->getAssetsUrl('jquery.tablesorter.min.js'));
     rex_view::addCssFile($this->getAssetsUrl('theme.default.min.css'));    
     
     rex_extension::register('PAGE_STRUCTURE_HEADER', function ($params) {

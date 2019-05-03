@@ -7,6 +7,7 @@ $config = rex_request('config', array(
 ));
 
 $form = '';
+$minicolors = rex_plugin::get('ui_tools','jquery-minicolors')->getProperty('status') ? ' ud_minicolors' : '';
 
 if ($config['submit']) {
     $cfg = rex_request('config','array');
@@ -156,7 +157,7 @@ $form .= $fragment->parse('core/form/container.php');
 $formElements = [];
 $n = [];
 $n['label'] = '<label for="structure_plus_color_online">Farbe online</label>';
-$n['field'] = '<input class="form-control ud_minicolors" id="structure_plus_color_online" type="text" name="config[color_online]" value="' . $this->getConfig('color_online') . '" />';
+$n['field'] = '<input class="form-control '.$minicolors.'" id="structure_plus_color_online" type="text" name="config[color_online]" value="' . $this->getConfig('color_online') . '" />';
 $formElements[] = $n;
 $fragment->setVar('elements', $formElements, false);
 $form .= $fragment->parse('core/form/container.php');
@@ -164,7 +165,7 @@ $form .= $fragment->parse('core/form/container.php');
 $formElements = [];
 $n = [];
 $n['label'] = '<label for="structure_plus_color_offline">Farbe Offline</label>';
-$n['field'] = '<input class="form-control ud_minicolors" id="structure_plus_color_offline" type="text" name="config[color_offline]" value="' . $this->getConfig('color_offline') . '" />';
+$n['field'] = '<input class="form-control '.$minicolors.'" id="structure_plus_color_offline" type="text" name="config[color_offline]" value="' . $this->getConfig('color_offline') . '" />';
 $formElements[] = $n;
 $fragment->setVar('elements', $formElements, false);
 $form .= $fragment->parse('core/form/container.php');
@@ -172,7 +173,7 @@ $form .= $fragment->parse('core/form/container.php');
 $formElements = [];
 $n = [];
 $n['label'] = '<label for="structure_plus_color_disabled">Farbe Gesperrt</label>';
-$n['field'] = '<input class="form-control ud_minicolors" id="structure_plus_color_disabled" type="text" name="config[color_disabled]" value="' . $this->getConfig('color_disabled') . '" />';
+$n['field'] = '<input class="form-control '.$minicolors.'" id="structure_plus_color_disabled" type="text" name="config[color_disabled]" value="' . $this->getConfig('color_disabled') . '" />';
 $formElements[] = $n;
 $fragment->setVar('elements', $formElements, false);
 $form .= $fragment->parse('core/form/container.php');
@@ -180,7 +181,7 @@ $form .= $fragment->parse('core/form/container.php');
 $formElements = [];
 $n = [];
 $n['label'] = '<label for="structure_plus_color_future">Farbe Zukunft</label>';
-$n['field'] = '<input class="form-control ud_minicolors" id="structure_plus_color_future" type="text" name="config[color_future]" value="' . $this->getConfig('color_future') . '" />';
+$n['field'] = '<input class="form-control '.$minicolors.'" id="structure_plus_color_future" type="text" name="config[color_future]" value="' . $this->getConfig('color_future') . '" />';
 $formElements[] = $n;
 $fragment->setVar('elements', $formElements, false);
 $form .= $fragment->parse('core/form/container.php');
@@ -188,7 +189,7 @@ $form .= $fragment->parse('core/form/container.php');
 $formElements = [];
 $n = [];
 $n['label'] = '<label for="structure_plus_color_gone">Farbe Abgelaufen</label>';
-$n['field'] = '<input class="form-control ud_minicolors" id="structure_plus_color_gone" type="text" name="config[color_gone]" value="' . $this->getConfig('color_gone') . '" />';
+$n['field'] = '<input class="form-control '.$minicolors.'" id="structure_plus_color_gone" type="text" name="config[color_gone]" value="' . $this->getConfig('color_gone') . '" />';
 $formElements[] = $n;
 $fragment->setVar('elements', $formElements, false);
 $form .= $fragment->parse('core/form/container.php');
@@ -231,6 +232,7 @@ echo $fragment->parse('core/page/section.php');
 
 ?>
 
+<?php if ($minicolors) : ?>
 <script type="text/javascript">
     /*
     $(document).on('rex:ready',function() {
@@ -259,3 +261,4 @@ echo $fragment->parse('core/page/section.php');
     
     
 </script>
+<?php endif ?>

@@ -41,7 +41,7 @@ class structure_plus {
         if ($config['items_per_page'] < 30) {
             $config['items_per_page'] = 0;
         }
-        $show_additional_column = in_array($config['additional_db_column'],['name','priority']) ? false : true;
+        $show_additional_column = in_array($config['additional_db_column'],['name','priority','createdate']) ? false : true;
         
         /*
             "additional_column_label" => "Online vom ..."
