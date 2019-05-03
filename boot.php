@@ -2,7 +2,9 @@
 
 if (rex::isBackend()) {
     
-    rex_view::addJSFile($this->getAssetsUrl('jquery.tablesorter.min.js'));
+    if (rex_plugin::exists('ui_tools','jquery-minicolors')) {
+        rex_view::addJSFile($this->getAssetsUrl('jquery.tablesorter.min.js'));
+    }
     rex_view::addCssFile($this->getAssetsUrl('theme.default.min.css'));    
     
     rex_extension::register('PAGE_STRUCTURE_HEADER', function ($params) {
@@ -24,7 +26,8 @@ if (rex::isBackend()) {
                 $subject = $params->getSubject();
                 $subject = preg_replace('/(<table.*?<\/table>.*?)<table.*?<\/table>/s','$1###tab2###',$subject,1);
                 $subject = str_replace('###tab2###',$table2,$subject);
-                
+                rex_logger::factory()->log('notice',$pager,[],__FILE__,__LINE__);
+
                 $subject = preg_replace('/<nav class="rex-nav-pagination">.*?<\/nav>/s',$pager,$subject);
                 $subject .= '<script>                        
                         $(document).on(\'rex:ready\', function (e, container) {

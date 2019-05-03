@@ -38,6 +38,9 @@ class structure_plus {
         if (!$config['additional_db_column']) {
             $config['additional_db_column'] = 'priority';
         }
+        if ($config['items_per_page'] < 30) {
+            $config['items_per_page'] = 0;
+        }
         $show_additional_column = in_array($config['additional_db_column'],['name','priority']) ? false : true;
         
         /*
