@@ -199,6 +199,7 @@ class structure_plus {
                 $tmpl_td = '';
                 if ($withTemplates) {
                     $selectedTemplate = 0;
+                    /*
                     if ($category_id) {
                         // template_id vom Startartikel erben
                         $sql2 = rex_sql::factory();
@@ -207,6 +208,7 @@ class structure_plus {
                             $selectedTemplate = $sql2->getValue('template_id');
                         }
                     }
+                     */
                     if (!$selectedTemplate || !isset($TEMPLATE_NAME[$selectedTemplate])) {
                         $selectedTemplate = rex_template::getDefaultId();
                     }
