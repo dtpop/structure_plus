@@ -152,8 +152,10 @@ class structure_plus {
             $qry = 'SELECT *
                 FROM
                     ' . rex::getTable('article') . '
-                WHERE ' . $where . '
-                ORDER BY '.$config['additional_db_column'].' '. $config['order_direction'];
+                WHERE ' . $where;
+            if ($config['additional_db_column']) {
+                $qry .= ' ORDER BY '.$config['additional_db_column'].' '. $config['order_direction'];
+            }
             if ($config['items_per_page']) {
                 $qry .= ' LIMIT ' . $artPager->getCursor() . ',' . $artPager->getRowsPerPage();
             }
